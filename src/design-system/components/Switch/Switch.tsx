@@ -7,14 +7,16 @@ export interface SwitchProps {
   defaultChecked?: boolean;
   disabled?: boolean;
   error?: boolean;
-  label?: string;
+  hideLabel?: boolean;
+  label: React.ReactNode;
+  labelPosition?: 'end' | 'start';
   name?: string;
   onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
 }
 
 export const Switch = React.forwardRef<HTMLInputElement, SwitchProps>(
   (
-    { checked, defaultChecked, disabled = false, error = false, label, name, onChange },
+    { checked, defaultChecked, disabled = false, error = false, hideLabel = false, label, labelPosition = 'end', name, onChange },
     ref,
   ) => {
     const [internalChecked, setInternalChecked] = React.useState(defaultChecked ?? false);
@@ -33,6 +35,14 @@ export const Switch = React.forwardRef<HTMLInputElement, SwitchProps>(
       isChecked && 'affirm-switch--selected',
       disabled && 'affirm-switch--disabled',
       error && 'affirm-switch--error',
+      labelPosition === 'start' && 'affirm-switch--inverted',
+    ]
+      .filter(Boolean)
+      .join(' ');
+
+    const labelClassNames = [
+      'affirm-switch__label',
+      hideLabel && 'affirm-switch__label--hidden',
     ]
       .filter(Boolean)
       .join(' ');
@@ -60,7 +70,7 @@ export const Switch = React.forwardRef<HTMLInputElement, SwitchProps>(
           </span>
           <span className="affirm-switch__handle" />
         </span>
-        {label && <span className="affirm-switch__label">{label}</span>}
+        <span className={labelClassNames}>{label}</span>
       </label>
     );
   },

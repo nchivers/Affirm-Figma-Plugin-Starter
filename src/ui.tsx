@@ -28,17 +28,14 @@ function App() {
   return (
     <main>
       <header>
-        <img src={require("./logo.svg")} />
         <Type variant="headline.large" as="h1" color="text.primary">Rectangle Creator</Type>
         <Link href="https://www.affirm.com">Affirm</Link>
       </header>
       <section>
-        <input id="input" type="number" min="0" ref={inputRef} />
         <InputText id="textinput" ref={inputRef} label={"Test Text Input"} value={textValue} onChange={e => setTextValue(e.target.value)} startIcon={<Icon name="checkmark-small" />} />
         <InputTextArea id="textarea" ref={inputTextAreaRef} label={"Test Text Area"} value={textAreaValue} onChange={e => setTextAreaValue(e.target.value)} startIcon={<Icon name="checkmark-small" />} />
-        <label htmlFor="input">Rectangle Count</label>
         <Checkbox checked={checked} label="Test label" onChange={e => setChecked(e.target.checked)} />
-        <Switch checked={switchChecked} label="Test label" onChange={e => setSwitchChecked(e.target.checked)} />
+        <Switch checked={switchChecked} label={<Type variant="body.large" as="span" color="text.primary">Test label node <Link href="https://www.affirm.com">Affirm</Link></Type>} onChange={e => setSwitchChecked(e.target.checked)} labelPosition="start" />
       </section>
       <footer>
         <button className="brand" onClick={onCreate}>
