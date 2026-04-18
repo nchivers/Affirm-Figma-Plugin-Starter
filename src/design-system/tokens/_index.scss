@@ -1,0 +1,15 @@
+// Global semantic defaults
+@use 'global';
+@use 'semantic';
+@use 'typography';
+@use 'link';
+
+// Component default tokens (load first — lowest specificity)
+@use '../components/Checkbox/tokens' as checkbox-tokens;
+@use '../components/InputText/tokens' as input-text-tokens;
+@use '../components/InputTextArea/tokens' as input-text-area-tokens;
+@use '../components/Link/tokens' as link-tokens;
+@use '../components/Switch/tokens' as switch-tokens;
+
+// Theme overrides (load second — higher specificity via compound selectors)
+// @use 'themes/rufus';

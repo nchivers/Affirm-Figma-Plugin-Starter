@@ -1,0 +1,42 @@
+@use 'design-system/tokens/index';
+
+html,
+body,
+main {
+  height: 100%;
+}
+
+body {
+  margin: 0;
+  background: var(--affirm-bg-surface-primary);
+  color: var(--affirm-text-default);
+}
+
+
+main {
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+section {
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  margin-bottom: var(--affirm-spacing-md);
+
+  > * + * {
+    margin-top: var(--affirm-spacing-xs);
+  }
+}
+
+footer > * + * {
+  margin-left: var(--affirm-spacing-xs);
+}
+
+img {
+  height: auto;
+  width: 2rem;
+}
