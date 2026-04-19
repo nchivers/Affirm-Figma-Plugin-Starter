@@ -1,6 +1,6 @@
 {
-  "name": "Webpack + React Sample",
-  "id": "webpack-react-sample",
+  "name": "Affirm Figma Plugin Template",
+  "id": "affirm-figma-plugin-template",
   "api": "1.0.0",
   "main": "dist/code.js",
   "ui": "dist/ui.html",
