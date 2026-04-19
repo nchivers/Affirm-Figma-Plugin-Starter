@@ -1,5 +1,9 @@
+export { Badge } from './Badge';
+export type { BadgeProps, BadgeCategory, BadgeContext, BadgeSize } from './Badge';
 export { Checkbox } from './Checkbox';
 export type { CheckboxProps } from './Checkbox';
+export { CircularLoader } from './CircularLoader';
+export type { CircularLoaderProps } from './CircularLoader';
 export { Icon } from './Icon';
 export type { IconProps, IconName, IconColor } from './Icon';
 export { InputText } from './InputText';

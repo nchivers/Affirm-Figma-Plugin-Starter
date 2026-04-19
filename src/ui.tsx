@@ -1,7 +1,7 @@
 import * as React from "react";
 import * as ReactDOM from "react-dom/client";
 import { ThemeProvider, Type } from "./design-system";
-import { Checkbox, Icon, InputText, InputTextArea, Link, Switch } from "./design-system/components";
+import { Badge, Checkbox, CircularLoader, Icon, InputText, InputTextArea, Link, Switch } from "./design-system/components";
 import "./ui.scss";
 
 declare function require(path: string): any;
@@ -28,8 +28,11 @@ function App() {
   return (
     <main>
       <header>
+        <Badge category="info">Test badge</Badge>
         <Type variant="headline.large" as="h1" color="text.primary">Rectangle Creator</Type>
         <Link href="https://www.affirm.com">Affirm</Link>
+        <CircularLoader />
+        <CircularLoader size="small" />
       </header>
       <section>
         <InputText id="textinput" ref={inputRef} label={"Test Text Input"} value={textValue} onChange={e => setTextValue(e.target.value)} startIcon={<Icon name="checkmark-small" />} />

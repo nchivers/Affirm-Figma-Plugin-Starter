@@ -5,7 +5,9 @@
 @use 'link';
 
 // Component default tokens (load first — lowest specificity)
+@use '../components/Badge/tokens' as badge-tokens;
 @use '../components/Checkbox/tokens' as checkbox-tokens;
+@use '../components/CircularLoader/tokens' as circular-loader-tokens;
 @use '../components/InputText/tokens' as input-text-tokens;
 @use '../components/InputTextArea/tokens' as input-text-area-tokens;
 @use '../components/Link/tokens' as link-tokens;
