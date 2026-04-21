@@ -1,7 +1,7 @@
 import * as React from "react";
 import * as ReactDOM from "react-dom/client";
 import { ThemeProvider, Type } from "./design-system";
-import { Badge, Button, Checkbox, CircularLoader, Icon, InputText, InputTextArea, Link, Switch, PageHeader, Dropdown, Divider } from "./design-system/components";
+import { Badge, Button, Checkbox, CircularLoader, Icon, InputText, InputTextArea, Link, Switch, PageHeader, Dropdown, Divider, PageFooter } from "./design-system/components";
 import "./ui.scss";
 
 declare function require(path: string): any;
@@ -45,14 +45,19 @@ function App() {
         <Switch checked={switchChecked} label={<Type variant="body.large" as="span" color="text.primary">Test label node <Link href="https://www.affirm.com">Affirm</Link></Type>} onChange={e => setSwitchChecked(e.target.checked)} labelPosition="start" />
         <Dropdown label="Test dropdown" options={[{ label: "Option 1", value: "option1" }, { label: "Option 2", value: "option2" }]} onChange={setDropdownValue} />
       </section>
-      <footer>
+      <section>
         <Button label="Create" onClick={onCreate} />
         <Button label="Create" emphasis="secondary" variant="neutral" onClick={onCreate} />
         <Button label="Create" emphasis="tertiary" onClick={onCreate} />
         <Button label="Create" icon="checkmark-small" iconPosition="start" variant="destructive" onClick={onCreate} />
         <Button label="Create" icon="close-small" iconPosition="only" onClick={onCreate} />
         <Button label="Create" icon={<Icon name="checkmark-small" />} iconPosition="start" onClick={onCreate} />
-      </footer>
+      </section>
+      <PageFooter
+        builderName="Nick"
+        builderSlack="https://affirm.slack.com/team/U12345"
+        updatedDate="04.21.2026"
+      />
     </main>
   );
 }

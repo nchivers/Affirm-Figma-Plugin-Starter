@@ -18,5 +18,7 @@ export { Icon } from './components';
 export type { IconProps, IconName, IconColor } from './components';
 export { Type } from './components';
 export type { TypeProps, TypeVariant, TypeColor } from './components';
+export { PageFooter } from './components';
+export type { PageFooterProps } from './components';
 export { PageHeader } from './components';
 export type { PageHeaderProps } from './components';

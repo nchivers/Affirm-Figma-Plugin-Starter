@@ -18,6 +18,8 @@ export { InputTextArea } from './InputTextArea';
 export type { InputTextAreaProps } from './InputTextArea';
 export { Link } from './Link';
 export type { LinkProps, LinkSize } from './Link';
+export { PageFooter } from './PageFooter';
+export type { PageFooterProps } from './PageFooter';
 export { Switch } from './Switch';
 export type { SwitchProps } from './Switch';
 export { Type } from './Type';

@@ -1,5 +1,6 @@
 import * as React from 'react';
 import { useFocusVisible } from '../../hooks';
+import { Divider } from '../Divider';
 import { Icon } from '../Icon';
 import './Dropdown.scss';
 
@@ -56,6 +57,7 @@ export const Dropdown = React.forwardRef<HTMLButtonElement, DropdownProps>(
 
     const [isOpen, setIsOpen] = React.useState(false);
     const [activeIndex, setActiveIndex] = React.useState(-1);
+    const [keyboardActive, setKeyboardActive] = React.useState(false);
     const [openAbove, setOpenAbove] = React.useState(false);
 
     const rootRef = React.useRef<HTMLDivElement>(null);
@@ -99,6 +101,7 @@ export const Dropdown = React.forwardRef<HTMLButtonElement, DropdownProps>(
     const close = React.useCallback(() => {
       setIsOpen(false);
       setActiveIndex(-1);
+      setKeyboardActive(false);
       onOpenChange?.(false);
     }, [onOpenChange]);
 
@@ -141,11 +144,11 @@ export const Dropdown = React.forwardRef<HTMLButtonElement, DropdownProps>(
 
     // Scroll active item into view
     React.useEffect(() => {
-      if (!isOpen || activeIndex < 0 || !listboxRef.current) return;
+      if (!isOpen || activeIndex < 0) return;
 
-      const item = listboxRef.current.children[activeIndex] as HTMLElement | undefined;
+      const item = document.getElementById(`${listboxId}-option-${activeIndex}`);
       item?.scrollIntoView({ block: 'nearest' });
-    }, [isOpen, activeIndex]);
+    }, [isOpen, activeIndex, listboxId]);
 
     const getNextEnabledIndex = (current: number, direction: 1 | -1): number => {
       if (enabledIndices.length === 0) return -1;
@@ -180,6 +183,7 @@ export const Dropdown = React.forwardRef<HTMLButtonElement, DropdownProps>(
             }
           } else {
             open();
+            setKeyboardActive(true);
             const selectedIdx = options.findIndex((o) => o.value === currentValue);
             const startIdx = selectedIdx >= 0 && !options[selectedIdx].disabled
               ? selectedIdx
@@ -190,6 +194,7 @@ export const Dropdown = React.forwardRef<HTMLButtonElement, DropdownProps>(
         }
         case 'ArrowDown': {
           e.preventDefault();
+          setKeyboardActive(true);
           if (!isOpen) {
             open();
             const selectedIdx = options.findIndex((o) => o.value === currentValue);
@@ -205,6 +210,7 @@ export const Dropdown = React.forwardRef<HTMLButtonElement, DropdownProps>(
         }
         case 'ArrowUp': {
           e.preventDefault();
+          setKeyboardActive(true);
           if (!isOpen) {
             open();
             setActiveIndex(enabledIndices[enabledIndices.length - 1] ?? -1);
@@ -216,6 +222,7 @@ export const Dropdown = React.forwardRef<HTMLButtonElement, DropdownProps>(
         case 'Home': {
           if (isOpen) {
             e.preventDefault();
+            setKeyboardActive(true);
             setActiveIndex(enabledIndices[0] ?? -1);
           }
           break;
@@ -223,6 +230,7 @@ export const Dropdown = React.forwardRef<HTMLButtonElement, DropdownProps>(
         case 'End': {
           if (isOpen) {
             e.preventDefault();
+            setKeyboardActive(true);
             setActiveIndex(enabledIndices[enabledIndices.length - 1] ?? -1);
           }
           break;
@@ -270,7 +278,7 @@ export const Dropdown = React.forwardRef<HTMLButtonElement, DropdownProps>(
     const showMessage = !error && message;
 
     const activeDescendantId =
-      isOpen && activeIndex >= 0
+      isOpen && keyboardActive && activeIndex >= 0
         ? `${listboxId}-option-${activeIndex}`
         : undefined;
 
@@ -324,10 +332,13 @@ export const Dropdown = React.forwardRef<HTMLButtonElement, DropdownProps>(
             className={listboxClassNames}
             role="listbox"
             aria-label={ariaLabel ?? label}
+            onMouseMove={() => {
+              if (keyboardActive) setKeyboardActive(false);
+            }}
           >
             {options.map((option, index) => {
               const isSelected = option.value === currentValue;
-              const isActive = index === activeIndex;
+              const isActive = keyboardActive && index === activeIndex;
 
               const itemClassNames = [
                 'affirm-listbox__item',
@@ -338,32 +349,36 @@ export const Dropdown = React.forwardRef<HTMLButtonElement, DropdownProps>(
                 .join(' ');
 
               return (
-                <li
-                  key={option.value}
-                  id={`${listboxId}-option-${index}`}
-                  className={itemClassNames}
-                  role="option"
-                  aria-selected={isSelected}
-                  aria-disabled={option.disabled || undefined}
-                  data-active={isActive || undefined}
-                  onClick={() => handleItemClick(option)}
-                  onMouseEnter={() => setActiveIndex(index)}
-                  onMouseLeave={() => setActiveIndex(-1)}
-                >
-                  {option.icon && (
-                    <span className="affirm-listbox__item-icon">
-                      {option.icon}
-                    </span>
+                <React.Fragment key={option.value}>
+                  {index > 0 && (
+                    <li role="presentation" className="affirm-listbox__divider">
+                      <Divider />
+                    </li>
                   )}
-                  <span className="affirm-listbox__item-label">
-                    {option.label}
-                  </span>
-                  {isSelected && (
-                    <span className="affirm-listbox__item-selected-icon">
-                      <Icon name="checkmark-small" />
+                  <li
+                    id={`${listboxId}-option-${index}`}
+                    className={itemClassNames}
+                    role="option"
+                    aria-selected={isSelected}
+                    aria-disabled={option.disabled || undefined}
+                    data-active={isActive || undefined}
+                    onClick={() => handleItemClick(option)}
+                  >
+                    {option.icon && (
+                      <span className="affirm-listbox__item-icon">
+                        {option.icon}
+                      </span>
+                    )}
+                    <span className="affirm-listbox__item-label">
+                      {option.label}
                     </span>
-                  )}
-                </li>
+                    {isSelected && (
+                      <span className="affirm-listbox__item-selected-icon">
+                        <Icon name="checkmark-small" />
+                      </span>
+                    )}
+                  </li>
+                </React.Fragment>
               );
             })}
           </ul>
