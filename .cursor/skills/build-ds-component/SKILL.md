@@ -83,10 +83,30 @@ Run these in order. Each produces information the next steps depend on.
 After all tool calls complete, compile a structured summary:
 
 - **Layer tree**: The hierarchical structure of the component (container > track > handle, etc.). Map each layer to a candidate BEM element name.
-- **Component API**: Every property, its type (`boolean`, `enum`, `string`, `instanceSwap`), variant values, and defaults.
+- **Component API**: Every property, its type (`boolean`, `enum`, `text`, `instanceSwap`), variant values, and defaults (see mapping table below).
 - **Variable bindings**: Which Figma variables are bound to which layer properties (fills, strokes, sizing, spacing, etc.).
 - **Visual states**: All states represented in the component set (resting, hover, pressed, focus-visible, disabled, error, selected/unselected, etc.).
 - **Typography**: Any text layers and their typography settings.
+
+### Map Figma properties to TypeScript props
+
+Figma exposes exactly four property types in the design panel. Every component prop MUST trace back to one of these. Use the table below to derive the TypeScript type:
+
+| Figma property type | What the developer sees in Figma | TypeScript pattern | Example |
+|---------------------|----------------------------------|-------------------|---------|
+| **Boolean** | Toggle (true/false). Controls visibility, selection state, or feature flag. | `propName?: boolean` with a default. | Figma "Disabled" → `disabled?: boolean` (default `false`) |
+| **Enum (variant)** | Dropdown with named options (e.g., Size: small, medium, large). | Exported union type alias + prop that uses it. | Figma "Size: small \| medium \| large" → `export type ButtonSize = 'small' \| 'medium' \| 'large';` then `size?: ButtonSize` (default the Figma default) |
+| **Text** | Editable string content for a text layer. | `propName: string` (required if no sensible default) or `propName?: string`. | Figma "Label" → `label: string` |
+| **Instance swap** | Slot that accepts a component instance (icons, illustrations, custom content). | `propName?: React.ReactNode` — let the consumer pass any renderable content. If the slot is icon-specific and your DS has an `IconName` type, accept both: `propName?: React.ReactNode \| IconName`. | Figma "Start Icon" → `startIcon?: React.ReactNode` |
+
+**Naming rules:**
+
+- **One Figma property = one TypeScript prop.** Never decompose a single Figma enum into multiple props. If Figma has one "Variant" property with values like "Primary", "Primary.Inverse", "Secondary", keep it as a single `variant` prop with all values in the union type.
+- Use the Figma property name converted to camelCase as the prop name. E.g., Figma "Label Position" → `labelPosition`, Figma "Show Icon" → `showIcon`.
+- **Enum values** are converted to kebab-case: dots, spaces, and camelCase boundaries become hyphens, then lowercase. E.g., Figma "Primary.Inverse" → `'primary-inverse'`, "Extra Small" → `'extra-small'`.
+- If a Figma boolean controls visibility of an instance swap slot, you may omit the boolean and derive visibility from the slot prop's presence: Figma "Has Icon" (boolean) + "Icon" (instance swap) → single `icon?: React.ReactNode` prop where `undefined` means hidden.
+- If a Figma enum has values like "True / False", treat it as a boolean prop.
+- Figma "Interaction" enums (resting, hover, pressed, disabled, focused) are NOT props — they map to CSS pseudo-classes and BEM modifiers driven by interaction. Do not expose them in the TypeScript API.
 
 Present this summary to the user before proceeding.
 
@@ -181,8 +201,27 @@ React component following established patterns:
 - `import * as React from 'react';`
 - Side-effect SCSS import: `import './<ComponentName>.scss';`
 - Relative imports for shared components (e.g., `import { Icon } from '../Icon';`)
-- `export interface <ComponentName>Props { ... }` with props derived from the Figma component API
-- `React.forwardRef<HTMLElement, <ComponentName>Props>` with appropriate ref element type
+
+**Explicit prop typing (MANDATORY):**
+
+- `export interface <ComponentName>Props { ... }` with every prop explicitly declared.
+- **NEVER extend base HTML attribute interfaces** (no `extends React.HTMLAttributes<...>`, no `extends Omit<React.InputHTMLAttributes<...>, ...>`). This leaks hundreds of irrelevant props and makes the component API unclear.
+- Export union type aliases for every enum property BEFORE the interface: `export type <ComponentName>Size = 'small' | 'medium' | 'large';`
+- Every prop must trace back to a Figma property from Phase 2 or be one of the standard structural props below.
+- **Standard structural props** (include only the ones the component actually needs):
+  - `className?: string` — custom class names on the root element
+  - `disabled?: boolean` — maps to Figma "Disabled" boolean or HTML disabled attribute
+  - `name?: string` — form field name (only for input-like components)
+  - `id?: string` — DOM id (only for input-like components that need label association)
+  - `onChange?: (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => void` — typed to the specific element
+  - `onFocus?: (e: React.FocusEvent<...>) => void` — only if the component needs focus handling
+  - `onBlur?: (e: React.FocusEvent<...>) => void` — only if the component needs blur handling
+  - `onClick?: (e: React.MouseEvent<...>) => void` — only for clickable non-form elements
+- If a consumer needs to pass `aria-*` or `data-*` attributes, add a focused escape hatch like `aria-label?: string` for the specific attribute, NOT a blanket `...rest` spread of all HTML attributes.
+
+**Component structure:**
+
+- `React.forwardRef<HTMLElement, <ComponentName>Props>` with the specific ref element type (e.g., `HTMLInputElement`, `HTMLButtonElement`, `HTMLDivElement`)
 - Controlled/uncontrolled pattern for stateful components (checked, value, etc.)
 - Class names built as arrays with `.filter(Boolean).join(' ')`
 - `<ComponentName>.displayName = '<ComponentName>';` after the component
@@ -194,7 +233,20 @@ export { ComponentName } from './ComponentName';
 export type { ComponentNameProps } from './ComponentName';
 ```
 
-### 4e. Integration updates
+### 4e. `README.md`
+
+A structured README that serves both developers and AI agents. The plan should confirm the following sections will be included:
+
+1. **Header**: Component name and one-sentence description.
+2. **Import**: Copy-pasteable import statement.
+3. **Props table**: Every prop from the interface — name, exact TypeScript type, default value (or "—" if required), and a short description. Required props marked with **Required.** in the description.
+4. **Usage examples**: One example per major variant or feature. If the component supports controlled/uncontrolled, show both. If it has slot props (icons, actions), show examples with content passed in. All examples must be valid JSX.
+5. **Do / Don't table**: 3–6 rows covering common mistakes — wrong prop types, using children when the component uses named slots, hardcoding styles, forgetting accessibility, etc.
+6. **Accessibility**: Keyboard interactions, ARIA attributes the component sets automatically, and anything the consumer must provide.
+
+Follow the full template in reference.md. The README is not optional.
+
+### 4f. Integration updates
 
 List the exact lines to add to:
 
@@ -240,19 +292,28 @@ Write the React component. Read at least one existing component TSX file right b
 
 Write the barrel export file.
 
-### Step 6: Register tokens
+### Step 6: Write `README.md`
+
+Write the component README following the template in reference.md. Populate it from the data already gathered:
+
+- **Props table**: Derive directly from the `<ComponentName>Props` interface you just wrote. Every prop must appear.
+- **Usage examples**: Write realistic, copy-pasteable JSX. Cover: basic usage, each major variant/size/emphasis, controlled vs uncontrolled (if applicable), slot props with content, error state, and disabled state.
+- **Do / Don't**: Think about what an agent or unfamiliar developer would get wrong. Common pitfalls: passing `children` to a component that uses named slot props, using wrong prop types (e.g., string instead of union literal), hardcoding colors instead of using the component's built-in variants, forgetting required props.
+- **Accessibility**: Document keyboard behavior, auto-applied ARIA attributes, and any consumer responsibilities (e.g., `aria-label` for icon-only usage).
+
+### Step 7: Register tokens
 
 Add the `@use` import to `src/design-system/tokens/_index.scss`, placed alphabetically among the existing component token imports.
 
-### Step 7: Export from components barrel
+### Step 8: Export from components barrel
 
 Add the component and type exports to `src/design-system/components/index.ts`, placed alphabetically.
 
-### Step 8: Export from root barrel
+### Step 9: Export from root barrel
 
 Add the component and type exports to `src/design-system/index.ts`.
 
-### Step 9: Verify
+### Step 10: Verify
 
 Run linter checks on all new and modified files. Fix any errors introduced.
 
@@ -262,7 +323,10 @@ Run linter checks on all new and modified files. Fix any errors introduced.
 
 - **NEVER hardcode colors, sizes, or spacing** in SCSS. Always use `var(--affirm-*)` tokens.
 - **NEVER use a classnames library.** Use the array + filter + join pattern.
+- **NEVER extend base HTML attribute interfaces** (`React.HTMLAttributes`, `React.InputHTMLAttributes`, etc.) or use `Omit<>` wrappers on them. Declare every prop explicitly.
+- **ALWAYS export union type aliases** for enum/variant properties before the props interface. Name them `<ComponentName><PropertyName>` (e.g., `ButtonSize`, `SwitchLabelPosition`).
+- **ALWAYS map props 1:1 to Figma properties.** One Figma property = one TypeScript prop. Never split a single Figma enum into multiple props (e.g., do NOT decompose a "Variant" enum with values "Primary" and "Primary.Inverse" into separate `variant` + `inverse` props). Every prop must trace back to a Figma boolean, enum, text, or instance swap property — or be a standard structural prop (`className`, `disabled`, `name`, `id`, event handlers).
 - **ALWAYS use `React.forwardRef`** and set `displayName`.
 - **CSV is the source of truth** for token assignments. Do not invent tokens not in the CSV.
-- **Read existing component files** before writing new ones to ensure pattern consistency.
+- **Read existing component files** before writing new ones to ensure pattern consistency. Prefer `Checkbox`, `Switch`, `Button`, and `Icon` as templates (they use explicit prop typing). Avoid copying the `extends` pattern from `InputText`, `InputTextArea`, or `Link`.
 - **Do not skip the feedback loop.** Always get user approval before building.

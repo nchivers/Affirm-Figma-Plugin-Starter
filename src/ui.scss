@@ -1,15 +1,10 @@
 @use 'design-system/tokens/index';
 
-html,
-body,
-main {
-  height: 100%;
-}
-
 body {
   margin: 0;
   background: var(--affirm-color-bg-primary);
   color: var(--affirm-text-default);
+  padding: var(--affirm-spacing-lg) var(--affirm-spacing-md) var(--affirm-spacing-xs);
 }
 
 
