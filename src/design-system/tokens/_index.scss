@@ -17,6 +17,7 @@
 @use '../components/PageFooter/tokens' as page-footer-tokens;
 @use '../components/Switch/tokens' as switch-tokens;
 @use '../components/PageHeader/tokens' as page-header-tokens;
+@use '../components/SectionHeader/tokens' as section-header-tokens;
 
 // Theme overrides (load second — higher specificity via compound selectors)
 // @use 'themes/rufus';

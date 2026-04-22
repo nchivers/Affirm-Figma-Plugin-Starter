@@ -1,12 +1,14 @@
 import * as React from "react";
 import * as ReactDOM from "react-dom/client";
 import { ThemeProvider, Type } from "./design-system";
-import { Badge, Button, Checkbox, CircularLoader, Icon, InputText, InputTextArea, Link, Switch, PageHeader, Dropdown, Divider, PageFooter } from "./design-system/components";
+import { Badge, Button, Checkbox, CircularLoader, Icon, InputText, InputTextArea, Link, Switch, PageHeader, Dropdown, Divider, PageFooter, SectionHeader } from "./design-system/components";
+import DsComponents from "./pages/DsComponents";
 import "./ui.scss";
 
 declare function require(path: string): any;
 
 function App() {
+  const [page, setPage] = React.useState<"main" | "ds">("main");
   const [checked, setChecked] = React.useState(false);
   const [textValue, setTextValue] = React.useState("");
   const [textAreaValue, setTextAreaValue] = React.useState("");
@@ -26,11 +28,15 @@ function App() {
     parent.postMessage({ pluginMessage: { type: "cancel" } }, "*");
   };
 
+  if (page === "ds") {
+    return <DsComponents onBack={() => setPage("main")} />;
+  }
+
   return (
     <main>
       <header>
-        <PageHeader title="Template" description="This is a figma plugin template" action={<Button label="Settings" variant="neutral" emphasis="tertiary" icon="levels" iconPosition="only" onClick={onCreate} />} />
-        
+        <PageHeader title="Template" description="This is a figma plugin template" action={<Button label="DS Components" variant="neutral" emphasis="tertiary" icon="levels" iconPosition="only" onClick={() => setPage("ds")} />} />
+        <SectionHeader title="Test section header" actionLabel="Test action" onActionClick={onCreate} body="This is a test of body text." />
         <Badge category="info">Test badge</Badge>
         <Type variant="headline.large" as="h1" color="text.primary">Rectangle Creator</Type>
         <Link href="https://www.affirm.com">Affirm</Link>

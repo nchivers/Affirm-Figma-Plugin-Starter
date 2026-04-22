@@ -20,6 +20,8 @@ export { Link } from './Link';
 export type { LinkProps, LinkSize } from './Link';
 export { PageFooter } from './PageFooter';
 export type { PageFooterProps } from './PageFooter';
+export { SectionHeader } from './SectionHeader';
+export type { SectionHeaderProps } from './SectionHeader';
 export { Switch } from './Switch';
 export type { SwitchProps } from './Switch';
 export { Type } from './Type';

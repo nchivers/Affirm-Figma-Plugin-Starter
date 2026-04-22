@@ -254,6 +254,21 @@ List the exact lines to add to:
 2. **`src/design-system/components/index.ts`**: Add `export { ComponentName } from './<ComponentName>';` and `export type { ComponentNameProps } from './<ComponentName>';`.
 3. **`src/design-system/index.ts`**: Add the component and type exports from `'./components'`.
 
+### 4g. DS Components showcase page registration
+
+Every new DS component MUST also be registered in the DS Components showcase page at [src/pages/DsComponents.tsx](src/pages/DsComponents.tsx). The plan must specify the exact additions:
+
+1. **Import**: Add `<ComponentName>` to the named imports from `'../design-system/components'`.
+2. **Demo component**: Define a `const <ComponentName>Demo: React.FC = () => ( ... )` (or a stateful function component if the component is controlled) alongside the other `*Demo` components. The demo should exercise the component's most common variants/states in a `.affirm-ds-components__demo-row` container.
+3. **Props table data**: Define a `const <camelCaseName>Props: PropRow[] = [ ... ]` array listing every prop from the component's TS interface. Each entry must be `{ name, required: boolean, type: string }`. The `type` string should mirror the TypeScript type — use the exported union type alias name (e.g., `'ButtonSize'`) rather than the literal members.
+4. **Sections entry**: Add a new entry to the `sections` array inside the `DsComponents` component, placed **alphabetically by `name`** to match the order in `src/design-system/components/index.ts`. The entry must supply:
+   - `name`: PascalCase component name.
+   - `description`: one-sentence description (reuse the one from the component's README header).
+   - `demo`: `<<ComponentName>Demo />`.
+   - `props`: the `<camelCaseName>Props` array.
+
+The showcase page uses `ComponentSection` which already handles the `SectionHeader`, demo wrapper, props table, and inter-section `Divider` — do not add those manually.
+
 ---
 
 ## Phase 5: User Feedback Loop
@@ -313,9 +328,20 @@ Add the component and type exports to `src/design-system/components/index.ts`, p
 
 Add the component and type exports to `src/design-system/index.ts`.
 
-### Step 10: Verify
+### Step 10: Register in the DS Components showcase page
 
-Run linter checks on all new and modified files. Fix any errors introduced.
+Edit [src/pages/DsComponents.tsx](src/pages/DsComponents.tsx) and apply the additions from Phase 4g:
+
+1. Add `<ComponentName>` to the named import from `'../design-system/components'`, keeping the list alphabetical.
+2. Add a `<ComponentName>Demo` component alongside the other `*Demo` components. Use `React.useState` when the component is controlled (see `CheckboxDemo`, `DropdownDemo`, `InputTextDemo`, `SwitchDemo` for patterns). Wrap multiple examples in `<div className="affirm-ds-components__demo-row">`.
+3. Add a `<camelCaseName>Props: PropRow[]` constant with every prop from the TS interface you wrote in Step 4. Required props use `required: true`; all others use `required: false`. Keep enum types as their exported alias name.
+4. Add a new entry to the `sections` array inside the `DsComponents` component, alphabetically by `name`, referencing the new demo and props constant plus a one-sentence `description`.
+
+Do NOT add a manual `SectionHeader`, props table, or `Divider` — `ComponentSection` handles those.
+
+### Step 11: Verify
+
+Run linter checks on all new and modified files. Fix any errors introduced. Run `npm run build` to confirm both the component and the showcase page compile cleanly.
 
 ---
 
@@ -329,4 +355,5 @@ Run linter checks on all new and modified files. Fix any errors introduced.
 - **ALWAYS use `React.forwardRef`** and set `displayName`.
 - **CSV is the source of truth** for token assignments. Do not invent tokens not in the CSV.
 - **Read existing component files** before writing new ones to ensure pattern consistency. Prefer `Checkbox`, `Switch`, `Button`, and `Icon` as templates (they use explicit prop typing). Avoid copying the `extends` pattern from `InputText`, `InputTextArea`, or `Link`.
+- **ALWAYS register new components in the DS Components showcase page** at `src/pages/DsComponents.tsx` (import + `*Demo` + `*Props` array + alphabetical `sections` entry). The component is not considered complete until it appears on this page.
 - **Do not skip the feedback loop.** Always get user approval before building.

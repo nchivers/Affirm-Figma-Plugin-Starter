@@ -1,7 +1,7 @@
 import * as React from 'react';
 import './Icon.scss';
 
-export type IconName = 'checkmark-small' | 'chevron-down' | 'close-small' | 'levels';
+export type IconName = 'checkmark-small' | 'chevron-down' | 'chevron-right' | 'close-small' | 'levels';
 
 export type IconColor =
   | 'icon.primary'
@@ -57,6 +57,18 @@ const icons: Record<IconName, IconDef> = {
         strokeLinecap="round"
         strokeLinejoin="round"
         fill="none"
+      />
+    ),
+  },
+  'chevron-right': {
+    viewBox: '0 0 24 24',
+    path: (
+      <path
+        fillRule="evenodd"
+        clipRule="evenodd"
+        d="M9.21967 5.21967C9.51256 4.92678 9.98744 4.92678 10.2803 5.21967L14.0176 8.95693L14.0391 8.97846C14.4168 9.35615 14.7321 9.6714 14.9686 9.95C15.2153 10.2406 15.42 10.5402 15.537 10.9002C15.7164 11.4525 15.7164 12.0475 15.537 12.5998C15.42 12.9598 15.2153 13.2594 14.9686 13.55C14.7321 13.8286 14.4168 14.1439 14.0391 14.5215L14.0176 14.5431L10.2803 18.2803C9.98744 18.5732 9.51256 18.5732 9.21967 18.2803C8.92678 17.9874 8.92678 17.5126 9.21967 17.2197L12.9569 13.4824C13.3617 13.0776 13.633 12.8056 13.8251 12.5792C14.0115 12.3596 14.079 12.2329 14.1104 12.1363C14.192 11.8852 14.192 11.6148 14.1104 11.3637C14.079 11.2671 14.0115 11.1404 13.8251 10.9208C13.633 10.6944 13.3617 10.4224 12.9569 10.0176L9.21967 6.28033C8.92678 5.98744 8.92678 5.51256 9.21967 5.21967Z"
+        fill="currentColor"
+        stroke="none"
       />
     ),
   },
