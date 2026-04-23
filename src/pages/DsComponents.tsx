@@ -465,6 +465,7 @@ const DsComponents: React.FC<DsComponentsProps> = ({ onBack }) => {
   return (
     <main className="affirm-ds-components">
       <PageHeader
+        navigation="secondary"
         title="DS Components"
         description="A live reference of every design system component, its props, and a usage example."
         action={
@@ -472,11 +473,12 @@ const DsComponents: React.FC<DsComponentsProps> = ({ onBack }) => {
             label="Back"
             variant="neutral"
             emphasis="tertiary"
-            icon="chevron-right"
-            iconPosition="start"
+            icon="arrow-left"
+            iconPosition="only"
             onClick={onBack}
           />
         }
+        actionPosition="start"
       />
       {sections.map((section, i) => (
         <ComponentSection

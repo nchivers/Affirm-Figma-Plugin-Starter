@@ -1,7 +1,7 @@
 import * as React from 'react';
 import './Icon.scss';
 
-export type IconName = 'checkmark-small' | 'chevron-down' | 'chevron-right' | 'close-small' | 'levels';
+export type IconName = 'arrow-left' | 'checkmark-small' | 'chevron-down' | 'chevron-right' | 'close-small' | 'levels';
 
 export type IconColor =
   | 'icon.primary'
@@ -35,6 +35,18 @@ interface IconDef {
 }
 
 const icons: Record<IconName, IconDef> = {
+  'arrow-left': {
+    viewBox: '0 0 20 20',
+    path: (
+      <path
+        fillRule="evenodd"
+        clipRule="evenodd"
+        d="M8.77528 3.72472C9.01935 3.9688 9.01935 4.36452 8.77527 4.6086L4.00889 9.37493H17.5C17.8452 9.37493 18.125 9.65475 18.125 9.99993C18.125 10.3451 17.8452 10.6249 17.5 10.6249H4.00888L8.77528 15.3913C9.01935 15.6354 9.01935 16.0311 8.77528 16.2752C8.5312 16.5193 8.13547 16.5193 7.89139 16.2752L2.05806 10.4419C1.94085 10.3247 1.875 10.1657 1.875 9.99993C1.875 9.83417 1.94085 9.6752 2.05806 9.55799L7.89139 3.72471C8.13547 3.48064 8.5312 3.48064 8.77528 3.72472Z"
+        fill="currentColor"
+        stroke="none"
+      />
+    ),
+  },
   'checkmark-small': {
     viewBox: '0 0 20 20',
     path: (

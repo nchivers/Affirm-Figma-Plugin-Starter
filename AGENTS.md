@@ -120,7 +120,7 @@ import { Icon } from './design-system/components';
 <Icon name="close-small" color="icon.critical" />
 ```
 
-**Props:** `name` (required: `'checkmark-small'` | `'close-small'`), `color` (default `'icon.primary'`), `className`
+**Props:** `name` (required: `'arrow-left'` | `'checkmark-small'` | `'close-small'`), `color` (default `'icon.primary'`), `className`
 
 ---
 

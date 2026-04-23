@@ -1,16 +1,26 @@
 @use 'design-system/tokens/index';
 
 body {
+  display: flex;
+  flex-direction: column;
   margin: 0;
   background: var(--affirm-color-bg-primary);
   color: var(--affirm-text-default);
   padding: var(--affirm-spacing-lg) var(--affirm-spacing-md) var(--affirm-spacing-xs);
 }
 
+#react-page {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  min-height: 100%;
+}
 
 main {
   display: flex;
   flex-direction: column;
+  flex: 1;
+  min-height: 100%;
 }
 
 section {
@@ -25,8 +35,8 @@ section {
   }
 }
 
-footer > * + * {
-  margin-left: var(--affirm-spacing-xs);
+.affirm-page-footer {
+  margin-top: auto;
 }
 
 img {

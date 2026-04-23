@@ -37,32 +37,16 @@ function App() {
       <header>
         <PageHeader title="Template" description="This is a figma plugin template" action={<Button label="DS Components" variant="neutral" emphasis="tertiary" icon="levels" iconPosition="only" onClick={() => setPage("ds")} />} />
         <SectionHeader title="Test section header" actionLabel="Test action" onActionClick={onCreate} body="This is a test of body text." />
-        <Badge category="info">Test badge</Badge>
-        <Type variant="headline.large" as="h1" color="text.primary">Rectangle Creator</Type>
-        <Link href="https://www.affirm.com">Affirm</Link>
-        <CircularLoader />
-        <CircularLoader size="small" />
       </header>
-      <Divider variant="secondary-inverse" />
       <section>
-        <InputText id="textinput" ref={inputRef} label={"Test Text Input"} value={textValue} onChange={e => setTextValue(e.target.value)} startIcon={<Icon name="checkmark-small" />} />
-        <InputTextArea id="textarea" ref={inputTextAreaRef} label={"Test Text Area"} value={textAreaValue} onChange={e => setTextAreaValue(e.target.value)} startIcon={<Icon name="checkmark-small" />} />
-        <Checkbox checked={checked} label="Test label" onChange={e => setChecked(e.target.checked)} />
-        <Switch checked={switchChecked} label={<Type variant="body.large" as="span" color="text.primary">Test label node <Link href="https://www.affirm.com">Affirm</Link></Type>} onChange={e => setSwitchChecked(e.target.checked)} labelPosition="start" />
-        <Dropdown label="Test dropdown" options={[{ label: "Option 1", value: "option1" }, { label: "Option 2", value: "option2" }]} onChange={setDropdownValue} />
+        <Type variant="body.large" color="text.primary">Your Plugin UI Here!</Type>
       </section>
-      <section>
-        <Button label="Create" onClick={onCreate} />
-        <Button label="Create" emphasis="secondary" variant="neutral" onClick={onCreate} />
-        <Button label="Create" emphasis="tertiary" onClick={onCreate} />
-        <Button label="Create" icon="checkmark-small" iconPosition="start" variant="destructive" onClick={onCreate} />
-        <Button label="Create" icon="close-small" iconPosition="only" onClick={onCreate} />
-        <Button label="Create" icon={<Icon name="checkmark-small" />} iconPosition="start" onClick={onCreate} />
-      </section>
+      {/** Update the footer to include your information! */}
       <PageFooter
         builderName="Nick"
         builderSlack="https://affirm.slack.com/team/U12345"
         updatedDate="04.21.2026"
+        className="affirm-page-footer"
       />
     </main>
   );
