@@ -2,7 +2,9 @@ import * as React from 'react';
 import {
   Badge,
   Button,
+  CardContainer,
   Checkbox,
+  Chip,
   CircularLoader,
   Divider,
   Dropdown,
@@ -14,6 +16,8 @@ import {
   PageHeader,
   SectionHeader,
   Switch,
+  Tab,
+  Tabs,
   Type,
 } from '../design-system/components';
 import './DsComponents.scss';
@@ -107,6 +111,40 @@ const ButtonDemo: React.FC = () => (
     <Button label="Tertiary" emphasis="tertiary" />
     <Button label="Destructive" variant="destructive" />
     <Button label="Icon" icon="checkmark-small" iconPosition="start" />
+  </div>
+);
+
+const CardContainerDemo: React.FC = () => (
+  <div style={{ display: 'flex', flexDirection: 'column', gap: 'var(--affirm-spacing-sm)' }}>
+    <div className="affirm-ds-components__demo-row">
+      <CardContainer placement="on-page" backgroundColor="primary">
+        <Type variant="body.small" color="text.secondary">On Page / Primary</Type>
+      </CardContainer>
+      <CardContainer placement="on-page" backgroundColor="secondary">
+        <Type variant="body.small" color="text.secondary">On Page / Secondary</Type>
+      </CardContainer>
+      <CardContainer placement="on-page" backgroundColor="tertiary">
+        <Type variant="body.small" color="text.secondary">On Page / Tertiary</Type>
+      </CardContainer>
+    </div>
+    <div className="affirm-ds-components__demo-row">
+      <CardContainer placement="on-surface" backgroundColor="primary">
+        <Type variant="body.small" color="text.secondary">On Surface / Primary</Type>
+      </CardContainer>
+      <CardContainer placement="inset" backgroundColor="primary">
+        <Type variant="body.small" color="text.secondary">Inset / Primary</Type>
+      </CardContainer>
+    </div>
+  </div>
+);
+
+const ChipDemo: React.FC = () => (
+  <div className="affirm-ds-components__demo-row">
+    <Chip label="Small" size="small" />
+    <Chip label="Medium" size="medium" />
+    <Chip label="Large" size="large" />
+    <Chip label="With icon" swapIcon={<Icon name="levels" />} />
+    <Chip label="Disabled" disabled />
   </div>
 );
 
@@ -217,6 +255,33 @@ const SwitchDemo: React.FC = () => {
   );
 };
 
+const TabsDemo: React.FC = () => {
+  const [activeTab, setActiveTab] = React.useState('tab1');
+  return (
+    <div style={{ width: '100%', display: 'flex', flexDirection: 'column', gap: 'var(--affirm-spacing-sm)' }}>
+      <Tabs value={activeTab} onChange={setActiveTab} aria-label="Demo tabs">
+        <Tab label="First" value="tab1">
+          <Type variant="body.medium" color="text.secondary">Content for the first tab.</Type>
+        </Tab>
+        <Tab label="Second" value="tab2">
+          <Type variant="body.medium" color="text.secondary">Content for the second tab.</Type>
+        </Tab>
+        <Tab label="Third" value="tab3">
+          <Type variant="body.medium" color="text.secondary">Content for the third tab.</Type>
+        </Tab>
+      </Tabs>
+      <Tabs alignment="center" defaultValue="c1" aria-label="Centered demo">
+        <Tab label="Centered A" value="c1">
+          <Type variant="body.medium" color="text.secondary">Centered tab content A.</Type>
+        </Tab>
+        <Tab label="Centered B" value="c2">
+          <Type variant="body.medium" color="text.secondary">Centered tab content B.</Type>
+        </Tab>
+      </Tabs>
+    </div>
+  );
+};
+
 const TypeDemo: React.FC = () => (
   <div style={{ display: 'flex', flexDirection: 'column', gap: 'var(--affirm-spacing-xxs)' }}>
     <Type variant="headline.large">Headline large</Type>
@@ -246,6 +311,24 @@ const buttonProps: PropRow[] = [
   { name: 'loading', required: false, type: 'boolean' },
   { name: 'disabled', required: false, type: 'boolean' },
   { name: 'onClick', required: false, type: '(e: MouseEvent) => void' },
+];
+
+const cardContainerProps: PropRow[] = [
+  { name: 'placement', required: false, type: 'CardContainerPlacement' },
+  { name: 'backgroundColor', required: false, type: 'CardContainerBackgroundColor' },
+  { name: 'as', required: false, type: 'CardContainerElement' },
+  { name: 'children', required: false, type: 'ReactNode' },
+  { name: 'className', required: false, type: 'string' },
+];
+
+const chipProps: PropRow[] = [
+  { name: 'label', required: true, type: 'string' },
+  { name: 'size', required: false, type: 'ChipSize' },
+  { name: 'swapIcon', required: false, type: 'ReactNode' },
+  { name: 'disabled', required: false, type: 'boolean' },
+  { name: 'className', required: false, type: 'string' },
+  { name: 'onClick', required: false, type: '(e: MouseEvent) => void' },
+  { name: 'aria-label', required: false, type: 'string' },
 ];
 
 const checkboxProps: PropRow[] = [
@@ -360,6 +443,24 @@ const switchProps: PropRow[] = [
   { name: 'onChange', required: false, type: '(e: ChangeEvent) => void' },
 ];
 
+const tabsProps: PropRow[] = [
+  { name: 'alignment', required: false, type: 'TabsAlignment' },
+  { name: 'value', required: false, type: 'string' },
+  { name: 'defaultValue', required: false, type: 'string' },
+  { name: 'disabled', required: false, type: 'boolean' },
+  { name: 'onChange', required: false, type: '(value: string) => void' },
+  { name: 'className', required: false, type: 'string' },
+  { name: 'aria-label', required: false, type: 'string' },
+  { name: 'children', required: true, type: 'ReactNode' },
+];
+
+const tabProps: PropRow[] = [
+  { name: 'label', required: true, type: 'string' },
+  { name: 'value', required: true, type: 'string' },
+  { name: 'disabled', required: false, type: 'boolean' },
+  { name: 'children', required: true, type: 'ReactNode' },
+];
+
 const typeProps: PropRow[] = [
   { name: 'variant', required: true, type: 'TypeVariant' },
   { name: 'color', required: false, type: 'TypeColor' },
@@ -381,6 +482,18 @@ const DsComponents: React.FC<DsComponentsProps> = ({ onBack }) => {
       description: 'Triggers actions. Supports multiple emphasis levels, variants, and icon placements.',
       demo: <ButtonDemo />,
       props: buttonProps,
+    },
+    {
+      name: 'CardContainer',
+      description: 'A themed container with placement-aware radius, padding, and background color variants.',
+      demo: <CardContainerDemo />,
+      props: cardContainerProps,
+    },
+    {
+      name: 'Chip',
+      description: 'An interactive pill-shaped element that triggers an action or navigation on click.',
+      demo: <ChipDemo />,
+      props: chipProps,
     },
     {
       name: 'Checkbox',
@@ -453,6 +566,12 @@ const DsComponents: React.FC<DsComponentsProps> = ({ onBack }) => {
       description: 'A toggle control for binary on/off preferences.',
       demo: <SwitchDemo />,
       props: switchProps,
+    },
+    {
+      name: 'Tabs',
+      description: 'A compound tab component that pairs a tab bar with content panels.',
+      demo: <TabsDemo />,
+      props: [...tabsProps, ...tabProps],
     },
     {
       name: 'Type',

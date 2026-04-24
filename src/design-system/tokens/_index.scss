@@ -7,6 +7,8 @@
 // Component default tokens (load first — lowest specificity)
 @use '../components/Badge/tokens' as badge-tokens;
 @use '../components/Button/tokens' as button-tokens;
+@use '../components/CardContainer/tokens' as card-container-tokens;
+@use '../components/Chip/tokens' as chip-tokens;
 @use '../components/Checkbox/tokens' as checkbox-tokens;
 @use '../components/CircularLoader/tokens' as circular-loader-tokens;
 @use '../components/Divider/tokens' as divider-tokens;
@@ -16,6 +18,7 @@
 @use '../components/Link/tokens' as link-tokens;
 @use '../components/PageFooter/tokens' as page-footer-tokens;
 @use '../components/Switch/tokens' as switch-tokens;
+@use '../components/Tabs/tokens' as tabs-tokens;
 @use '../components/PageHeader/tokens' as page-header-tokens;
 @use '../components/SectionHeader/tokens' as section-header-tokens;
 
