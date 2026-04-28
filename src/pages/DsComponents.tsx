@@ -9,6 +9,7 @@ import {
   Divider,
   Dropdown,
   Icon,
+  InputNumber,
   InputText,
   InputTextArea,
   Link,
@@ -200,6 +201,13 @@ const IconDemo: React.FC = () => (
     <Icon name="levels" />
   </div>
 );
+
+const InputNumberDemo: React.FC = () => {
+  const [value, setValue] = React.useState('');
+  return (
+    <InputNumber label="Quantity" value={value} onChange={(e) => setValue(e.target.value)} min={0} max={100} step={1} />
+  );
+};
 
 const InputTextDemo: React.FC = () => {
   const [value, setValue] = React.useState('');
@@ -397,6 +405,27 @@ const iconProps: PropRow[] = [
   { name: 'className', required: false, type: 'string' },
 ];
 
+const inputNumberProps: PropRow[] = [
+  { name: 'label', required: true, type: 'string' },
+  { name: 'value', required: false, type: 'string' },
+  { name: 'defaultValue', required: false, type: 'string' },
+  { name: 'error', required: false, type: 'boolean' },
+  { name: 'errorMessage', required: false, type: 'string' },
+  { name: 'message', required: false, type: 'string' },
+  { name: 'disabled', required: false, type: 'boolean' },
+  { name: 'startIcon', required: false, type: 'ReactNode' },
+  { name: 'endIcon', required: false, type: 'ReactNode' },
+  { name: 'min', required: false, type: 'number' },
+  { name: 'max', required: false, type: 'number' },
+  { name: 'step', required: false, type: 'number' },
+  { name: 'className', required: false, type: 'string' },
+  { name: 'name', required: false, type: 'string' },
+  { name: 'id', required: false, type: 'string' },
+  { name: 'onChange', required: false, type: '(e: ChangeEvent) => void' },
+  { name: 'onFocus', required: false, type: '(e: FocusEvent) => void' },
+  { name: 'onBlur', required: false, type: '(e: FocusEvent) => void' },
+];
+
 const inputTextProps: PropRow[] = [
   { name: 'label', required: true, type: 'string' },
   { name: 'value', required: false, type: 'string' },
@@ -561,6 +590,12 @@ const DsComponents: React.FC<DsComponentsProps> = ({ onBack }) => {
       description: 'Renders a design system SVG icon at a configurable color.',
       demo: <IconDemo />,
       props: iconProps,
+    },
+    {
+      name: 'InputNumber',
+      description: 'A single-line numeric input field with floating label, optional icons, and validation messaging.',
+      demo: <InputNumberDemo />,
+      props: inputNumberProps,
     },
     {
       name: 'InputText',

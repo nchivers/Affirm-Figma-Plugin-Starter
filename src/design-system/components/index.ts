@@ -16,6 +16,8 @@ export { Dropdown } from './Dropdown';
 export type { DropdownProps, DropdownOption } from './Dropdown';
 export { Icon } from './Icon';
 export type { IconProps, IconName, IconColor } from './Icon';
+export { InputNumber } from './InputNumber';
+export type { InputNumberProps } from './InputNumber';
 export { InputText } from './InputText';
 export type { InputTextProps } from './InputText';
 export { InputTextArea } from './InputTextArea';

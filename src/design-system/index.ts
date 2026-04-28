@@ -20,6 +20,8 @@ export { Dropdown } from './components';
 export type { DropdownProps, DropdownOption } from './components';
 export { Icon } from './components';
 export type { IconProps, IconName, IconColor } from './components';
+export { InputNumber } from './components';
+export type { InputNumberProps } from './components';
 export { Type } from './components';
 export type { TypeProps, TypeVariant, TypeColor } from './components';
 export { PageFooter } from './components';
