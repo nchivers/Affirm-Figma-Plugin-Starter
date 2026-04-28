@@ -24,6 +24,8 @@ export { Link } from './Link';
 export type { LinkProps, LinkSize } from './Link';
 export { PageFooter } from './PageFooter';
 export type { PageFooterProps } from './PageFooter';
+export { Radio } from './Radio';
+export type { RadioProps } from './Radio';
 export { SectionHeader } from './SectionHeader';
 export type { SectionHeaderProps } from './SectionHeader';
 export { Switch } from './Switch';

@@ -14,6 +14,7 @@ import {
   Link,
   PageFooter,
   PageHeader,
+  Radio,
   SectionHeader,
   Switch,
   Tab,
@@ -228,6 +229,30 @@ const PageFooterDemo: React.FC = () => (
   </div>
 );
 
+const RadioDemo: React.FC = () => {
+  const [selected, setSelected] = React.useState('option1');
+  return (
+    <div className="affirm-ds-components__demo-row">
+      <Radio
+        label="Option 1"
+        name="demo-radio"
+        value="option1"
+        checked={selected === 'option1'}
+        onChange={() => setSelected('option1')}
+      />
+      <Radio
+        label="Option 2"
+        name="demo-radio"
+        value="option2"
+        checked={selected === 'option2'}
+        onChange={() => setSelected('option2')}
+      />
+      <Radio label="Error" error />
+      <Radio label="Disabled" disabled />
+    </div>
+  );
+};
+
 const PageHeaderDemo: React.FC = () => (
   <Type variant="body.small" color="text.secondary">
     The PageHeader is used at the top of this page. See the top of the screen for a live example.
@@ -416,6 +441,18 @@ const pageFooterProps: PropRow[] = [
   { name: 'className', required: false, type: 'string' },
 ];
 
+const radioProps: PropRow[] = [
+  { name: 'label', required: false, type: 'string' },
+  { name: 'checked', required: false, type: 'boolean' },
+  { name: 'defaultChecked', required: false, type: 'boolean' },
+  { name: 'disabled', required: false, type: 'boolean' },
+  { name: 'error', required: false, type: 'boolean' },
+  { name: 'name', required: false, type: 'string' },
+  { name: 'value', required: false, type: 'string' },
+  { name: 'className', required: false, type: 'string' },
+  { name: 'onChange', required: false, type: '(e: ChangeEvent) => void' },
+];
+
 const pageHeaderProps: PropRow[] = [
   { name: 'title', required: true, type: 'string' },
   { name: 'description', required: true, type: 'string' },
@@ -554,6 +591,12 @@ const DsComponents: React.FC<DsComponentsProps> = ({ onBack }) => {
       description: 'Top-of-page header with a title, description, and optional action button.',
       demo: <PageHeaderDemo />,
       props: pageHeaderProps,
+    },
+    {
+      name: 'Radio',
+      description: 'A single radio button for selecting one option from a mutually exclusive group.',
+      demo: <RadioDemo />,
+      props: radioProps,
     },
     {
       name: 'SectionHeader',

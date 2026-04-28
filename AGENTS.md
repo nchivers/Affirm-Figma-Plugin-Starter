@@ -100,7 +100,7 @@ import { Checkbox } from './design-system/components';
 <Checkbox label="I agree" checked={agreed} onChange={e => setAgreed(e.target.checked)} />
 ```
 
-**Props:** `checked`, `defaultChecked`, `disabled`, `error`, `label`, `name`, `onChange`
+**Props:** `label` (required, accepts `ReactNode`), `checked`, `defaultChecked`, `disabled`, `error`, `name`, `onChange`
 
 ### Switch -- Toggle switch
 

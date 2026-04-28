@@ -7,7 +7,7 @@ export interface CheckboxProps {
   defaultChecked?: boolean;
   disabled?: boolean;
   error?: boolean;
-  label?: string;
+  label: React.ReactNode;
   name?: string;
   onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
 }
@@ -53,7 +53,7 @@ export const Checkbox = React.forwardRef<HTMLInputElement, CheckboxProps>(
           <span className="affirm-checkbox__indicator">
             {isChecked ? <Icon name="checkmark-small" className="affirm-checkbox__indicator-icon" /> : null}
           </span>
-          {label && <span className="affirm-checkbox__label">{label}</span>}
+          <span className="affirm-checkbox__label">{label}</span>
         </div>
       </label>
     );
