@@ -181,7 +181,7 @@ Preserve any additional fields from the source manifest (`relaunchButtons`, `per
 Replicate all sandbox functionality from the source plugin. The structure must follow:
 
 ```typescript
-figma.showUI(__html__, { themeColors: true, height: <source-height>, width: <source-width> });
+figma.showUI(__html__, { themeColors: true, height: <estimated-height>, width: <source-width> });
 
 figma.ui.onmessage = (msg) => {
   // All message handlers from the source
@@ -189,7 +189,7 @@ figma.ui.onmessage = (msg) => {
 ```
 
 Key rules:
-- Preserve the exact `figma.showUI` dimensions from the source.
+- Keep the source `width`. For `height`, estimate a new value based on the converted UI content -- the design system template adds structural chrome (PageHeader, SectionHeader, PageFooter) and increases tap-target sizes, so the source height will almost always be too small. Do not exceed 800.
 - Keep `themeColors: true` (required for DS theming).
 - Replicate every message handler and its logic faithfully.
 - Replicate all Figma API operations exactly.

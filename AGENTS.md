@@ -26,11 +26,25 @@ This is a **Figma plugin starter** built with React, TypeScript, SCSS, and Webpa
 
 Follow this decision process for every UI element:
 
-1. **Does a DS component exist?** Use it directly.
-2. **Can you compose DS components?** Combine existing components to build what you need.
-3. **Truly need something custom?** Use design system tokens for all visual properties (`var(--affirm-*)`), follow BEM naming (`affirm-<name>`), and read `src/design-system/README.md` for the full token reference.
+1. **Does a page template exist?** Copy the matching template from `src/design-system/templates/` and customize it. See the "Page Templates" section below.
+2. **Does a DS component exist?** Use it directly.
+3. **Can you compose DS components?** Combine existing components to build what you need.
+4. **Truly need something custom?** Use design system tokens for all visual properties (`var(--affirm-*)`), follow BEM naming (`affirm-<name>`), and read `src/design-system/README.md` for the full token reference.
 
-Never skip to step 3 without confirming steps 1 and 2 don't apply.
+Never skip to step 4 without confirming steps 1--3 don't apply.
+
+---
+
+## Page Templates
+
+**Before building any plugin page layout, start from an existing template.** Copy the appropriate template file and customize it. Never build a page layout from scratch.
+
+Templates live in `src/design-system/templates/`. They are copy-paste starters, not importable components -- copy the file into `src/ui.tsx` or `src/pages/` and modify it in place.
+
+- **Main page** -- Copy `src/design-system/templates/MainTemplate.tsx` into your `src/ui.tsx`. This is the standard layout for every plugin's primary UI: `PageHeader` (main) + `SectionHeader` + content `<section>` + `PageFooter`.
+- **Settings page** -- Copy `src/design-system/templates/SettingsTemplate.tsx` into `src/pages/`. This is the standard layout for plugin settings: `PageHeader` (secondary, with back button) + `SectionHeader` + content `<section>` + `PageFooter`.
+
+After copying, replace the placeholder text, wire up your state and message handlers, and add your plugin-specific UI inside the `<section>` slot. Keep the `PageHeader` / `SectionHeader` / `PageFooter` structure intact.
 
 ---
 
@@ -209,6 +223,8 @@ React.useEffect(() => {
 
 | Need | Use |
 |------|-----|
+| New main page | Copy `src/design-system/templates/MainTemplate.tsx` |
+| New settings page | Copy `src/design-system/templates/SettingsTemplate.tsx` |
 | Any text | `<Type variant="..." color="...">` |
 | Text input | `<InputText label="...">` |
 | Text area | `<InputTextArea label="...">` |
