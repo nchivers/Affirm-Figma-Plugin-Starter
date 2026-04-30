@@ -13,9 +13,11 @@ import {
   InputText,
   InputTextArea,
   Link,
+  ListOfRows,
   PageFooter,
   PageHeader,
   Radio,
+  Row,
   SectionHeader,
   Switch,
   Tab,
@@ -231,6 +233,33 @@ const LinkDemo: React.FC = () => (
   </div>
 );
 
+const ListOfRowsDemo: React.FC = () => (
+  <div style={{ display: 'flex', flexDirection: 'column', gap: 'var(--affirm-spacing-md)', width: '100%' }}>
+    <Type variant="body.small.highImp">Contained AIO (default)</Type>
+    <ListOfRows treatment="contained-aio">
+      <Row title="Payment 1" subtitle={[{ text: 'Due Jan 15' }]} contentRight={<Type variant="body.large" as="span">$250.00</Type>} />
+      <Row title="Payment 2" subtitle={[{ text: 'Due Feb 15' }]} contentRight={<Type variant="body.large" as="span">$250.00</Type>} />
+      <Row title="Payment 3" subtitle={[{ text: 'Due Mar 15' }]} contentRight={<Type variant="body.large" as="span">$250.00</Type>} />
+    </ListOfRows>
+    <Type variant="body.small.highImp">Contained Individual</Type>
+    <ListOfRows treatment="contained-individual">
+      <Row standAlone title="Account A" subtitle={[{ text: 'Savings' }]} contentRight={<Type variant="body.large" as="span">$1,200.00</Type>} />
+      <Row standAlone title="Account B" subtitle={[{ text: 'Checking' }]} contentRight={<Type variant="body.large" as="span">$3,400.00</Type>} />
+    </ListOfRows>
+    <Type variant="body.small.highImp">Uncontained & Divided</Type>
+    <ListOfRows treatment="uncontained-divided">
+      <Row title="Transaction 1" subtitle={[{ text: 'Completed' }]} />
+      <Row title="Transaction 2" subtitle={[{ text: 'Pending' }]} />
+      <Row title="Transaction 3" subtitle={[{ text: 'Failed', color: 'accent-red' }]} />
+    </ListOfRows>
+    <Type variant="body.small.highImp">Uncontained & Undivided</Type>
+    <ListOfRows treatment="uncontained-undivided">
+      <Row title="Item A" subtitle={[{ text: 'Description A' }]} />
+      <Row title="Item B" subtitle={[{ text: 'Description B' }]} />
+    </ListOfRows>
+  </div>
+);
+
 const PageFooterDemo: React.FC = () => (
   <div style={{ width: '100%' }}>
     <PageFooter builderName="Nick" builderSlack="https://affirm.slack.com/team/U12345" updatedDate="04.21.2026" />
@@ -260,6 +289,36 @@ const RadioDemo: React.FC = () => {
     </div>
   );
 };
+
+const RowDemo: React.FC = () => (
+  <div style={{ display: 'flex', flexDirection: 'column', gap: 'var(--affirm-spacing-sm)', width: '100%' }}>
+    <Row
+      title="Basic row"
+      subtitle={[{ text: 'Simple subtitle text' }]}
+    />
+    <Row
+      title="Interactive row"
+      subtitle={[{ text: 'Tap to navigate' }]}
+      leadingGraphic={<Icon name="levels" />}
+      trailingElement={<Icon name="chevron-right" />}
+      interactive
+      onClick={() => { /* demo */ }}
+    />
+    <Row
+      standAlone
+      title="Stand-alone row"
+      subtitle={[{ text: '$1,234.56', color: 'default', weight: 'high-impact' }]}
+      trailingElement={<Icon name="chevron-right" />}
+      interactive
+      onClick={() => { /* demo */ }}
+    />
+    <Row
+      title="Row with Switch"
+      subtitle={[{ text: 'Non-interactive container' }]}
+      trailingElement={<Switch label="Toggle" hideLabel />}
+    />
+  </div>
+);
 
 const PageHeaderDemo: React.FC = () => (
   <Type variant="body.small" color="text.secondary">
@@ -463,6 +522,12 @@ const linkProps: PropRow[] = [
   { name: 'children', required: false, type: 'ReactNode' },
 ];
 
+const listOfRowsProps: PropRow[] = [
+  { name: 'treatment', required: false, type: 'ListOfRowsTreatment' },
+  { name: 'children', required: true, type: 'ReactNode' },
+  { name: 'className', required: false, type: 'string' },
+];
+
 const pageFooterProps: PropRow[] = [
   { name: 'builderName', required: true, type: 'string' },
   { name: 'builderSlack', required: false, type: 'string' },
@@ -480,6 +545,25 @@ const radioProps: PropRow[] = [
   { name: 'value', required: false, type: 'string' },
   { name: 'className', required: false, type: 'string' },
   { name: 'onChange', required: false, type: '(e: ChangeEvent) => void' },
+];
+
+const rowProps: PropRow[] = [
+  { name: 'standAlone', required: false, type: 'boolean' },
+  { name: 'interactive', required: false, type: 'boolean' },
+  { name: 'disabled', required: false, type: 'boolean' },
+  { name: 'leadingGraphic', required: false, type: 'ReactNode' },
+  { name: 'leadingGraphicSize', required: false, type: 'RowLeadingGraphicSize' },
+  { name: 'title', required: false, type: 'string' },
+  { name: 'titleWeight', required: false, type: 'RowTitleWeight' },
+  { name: 'titleColor', required: false, type: 'RowTitleColor' },
+  { name: 'subtitle', required: false, type: 'RowSubtextSegment[] | ReactNode' },
+  { name: 'subtitleOrientation', required: false, type: 'RowSubtextOrientation' },
+  { name: 'swapMainContent', required: false, type: 'ReactNode' },
+  { name: 'contentRight', required: false, type: 'ReactNode' },
+  { name: 'trailingElement', required: false, type: 'ReactNode' },
+  { name: 'className', required: false, type: 'string' },
+  { name: 'onClick', required: false, type: '(e: MouseEvent) => void' },
+  { name: 'aria-label', required: false, type: 'string' },
 ];
 
 const pageHeaderProps: PropRow[] = [
@@ -616,6 +700,12 @@ const DsComponents: React.FC<DsComponentsProps> = ({ onBack }) => {
       props: linkProps,
     },
     {
+      name: 'ListOfRows',
+      description: 'A container that arranges multiple Row components in a vertical list with configurable visual treatments.',
+      demo: <ListOfRowsDemo />,
+      props: listOfRowsProps,
+    },
+    {
       name: 'PageFooter',
       description: 'Attribution footer shown at the bottom of a plugin page.',
       demo: <PageFooterDemo />,
@@ -632,6 +722,12 @@ const DsComponents: React.FC<DsComponentsProps> = ({ onBack }) => {
       description: 'A single radio button for selecting one option from a mutually exclusive group.',
       demo: <RadioDemo />,
       props: radioProps,
+    },
+    {
+      name: 'Row',
+      description: 'A flexible list item for displaying content in a horizontal layout with optional leading graphic, trailing element, and interactive states.',
+      demo: <RowDemo />,
+      props: rowProps,
     },
     {
       name: 'SectionHeader',
