@@ -170,6 +170,28 @@
   }
 
   // =========================================================================
+  // Tooltip flipped below (when button is near top of viewport)
+  // =========================================================================
+
+  &--tooltip-below &__tooltip {
+    bottom: auto;
+    top: 100%;
+    translate: 0 var(--affirm-position-button-icon-only-tooltip-top-resting);
+  }
+
+  &--tooltip-below:hover:not(&--disabled):not(&--loading) &__tooltip {
+    translate: 0 var(--affirm-position-button-icon-only-tooltip-top-hover);
+  }
+
+  &--tooltip-below:active:not(&--disabled):not(&--loading) &__tooltip {
+    translate: 0 var(--affirm-position-button-icon-only-tooltip-top-pressed);
+  }
+
+  &--tooltip-below:focus-visible &__tooltip {
+    translate: 0 var(--affirm-position-button-icon-only-tooltip-top-focus-visible);
+  }
+
+  // =========================================================================
   // Disabled
   // =========================================================================
 

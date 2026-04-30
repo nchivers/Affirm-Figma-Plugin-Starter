@@ -82,6 +82,8 @@ export const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
       disabled = false,
       className,
       type = 'button',
+      onMouseEnter,
+      onFocus,
       ...rest
     },
     ref,
@@ -89,6 +91,50 @@ export const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
     const variantMod = getVariantModifier(emphasis, variant);
     const hasIcon = icon != null && iconPosition !== 'none';
     const isIconOnly = iconPosition === 'only';
+
+    const buttonRef = React.useRef<HTMLButtonElement | null>(null);
+    const tooltipRef = React.useRef<HTMLSpanElement | null>(null);
+    const [tooltipPosition, setTooltipPosition] = React.useState<
+      'above' | 'below'
+    >('above');
+
+    const setRefs = React.useCallback(
+      (node: HTMLButtonElement | null) => {
+        buttonRef.current = node;
+        if (typeof ref === 'function') {
+          ref(node);
+        } else if (ref) {
+          (ref as React.MutableRefObject<HTMLButtonElement | null>).current =
+            node;
+        }
+      },
+      [ref],
+    );
+
+    const measureTooltipPosition = React.useCallback(() => {
+      if (!isIconOnly) return;
+      const button = buttonRef.current;
+      const tooltip = tooltipRef.current;
+      if (!button || !tooltip) return;
+      const buttonRect = button.getBoundingClientRect();
+      const tooltipHeight = tooltip.offsetHeight;
+      const gap = 8;
+      setTooltipPosition(
+        buttonRect.top - tooltipHeight - gap < 0 ? 'below' : 'above',
+      );
+    }, [isIconOnly]);
+
+    const handleMouseEnter = (
+      event: React.MouseEvent<HTMLButtonElement>,
+    ) => {
+      measureTooltipPosition();
+      onMouseEnter?.(event);
+    };
+
+    const handleFocus = (event: React.FocusEvent<HTMLButtonElement>) => {
+      measureTooltipPosition();
+      onFocus?.(event);
+    };
 
     const classNames = [
       'affirm-button',
@@ -98,6 +144,9 @@ export const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
       hasIcon && iconPosition === 'start' && 'affirm-button--icon-start',
       hasIcon && iconPosition === 'end' && 'affirm-button--icon-end',
       isIconOnly && 'affirm-button--icon-only',
+      isIconOnly &&
+        tooltipPosition === 'below' &&
+        'affirm-button--tooltip-below',
       disabled && 'affirm-button--disabled',
       loading && 'affirm-button--loading',
       className,
@@ -121,12 +170,14 @@ export const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
 
     return (
       <button
-        ref={ref}
+        ref={setRefs}
         className={classNames}
         type={type}
         disabled={disabled || loading}
         aria-busy={loading || undefined}
         aria-label={isIconOnly ? label : undefined}
+        onMouseEnter={handleMouseEnter}
+        onFocus={handleFocus}
         {...rest}
       >
         {loading ? (
@@ -143,7 +194,11 @@ export const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
             )}
             <span className="affirm-button__label">{label}</span>
             {isIconOnly && (
-              <span className="affirm-button__tooltip" role="tooltip">
+              <span
+                ref={tooltipRef}
+                className="affirm-button__tooltip"
+                role="tooltip"
+              >
                 {label}
               </span>
             )}

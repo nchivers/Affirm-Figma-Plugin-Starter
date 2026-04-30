@@ -95,6 +95,6 @@ Also accepts all standard `<button>` HTML attributes (except `children` — use 
 ## Accessibility
 
 - Renders a native `<button>` element with full keyboard support.
-- When `iconPosition="only"`, the `label` is applied as `aria-label` and a tooltip is rendered for sighted users.
+- When `iconPosition="only"`, the `label` is applied as `aria-label` and a tooltip is rendered for sighted users. The tooltip auto-flips above or below the button based on available space in the viewport, so it stays visible when the button is near the top of the screen.
 - When `loading` is `true`, `aria-busy` is set and the button is disabled.
 - `disabled` renders the native `disabled` attribute, removing the button from the tab order.
