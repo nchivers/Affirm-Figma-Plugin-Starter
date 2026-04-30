@@ -33,6 +33,8 @@ Follow this decision process for every UI element:
 
 Never skip to step 4 without confirming steps 1--3 don't apply.
 
+**UX patterns:** Read and follow `src/design-system/UX_PATTERNS.md` for interaction rules (form behavior, error handling, etc.). These patterns override default assumptions about how components should be composed.
+
 ---
 
 ## Page Templates
@@ -52,7 +54,12 @@ After copying, replace the placeholder text, wire up your state and message hand
 
 Import from `'./design-system/components'` (relative to `src/`). Providers and hooks import from `'./design-system'`.
 
-### Type -- All text rendering
+### Discovering components
+
+1. **Full list of exports:** Read `src/design-system/components/index.ts` for every available component.
+2. **Props, usage, and guidelines:** Read `src/design-system/components/<Name>/README.md` for the component you want to use.
+
+### Critical rule: Type for ALL text
 
 Use `<Type>` for ALL text. Never use raw `<h1>`, `<p>`, `<span>` with manual font/color styling.
 
@@ -64,77 +71,9 @@ import { Type } from './design-system/components';
 <Type variant="body.small.highImp" color="text.critical">Error message</Type>
 ```
 
-**Props:** `variant` (required), `color` (default `'text.primary'`), `as` (override HTML element), `className`, `children`
-
 **Variants:** `headline.xxlarge`, `headline.xlarge`, `headline.large`, `headline.medium`, `headline.small`, `body.xlarge`, `body.large`, `body.medium`, `body.small`, `body.xlarge.highImp`, `body.large.highImp`, `body.medium.highImp`, `body.small.highImp`, `body.support.xlarge.strike`, `body.support.large.strike`, `body.support.medium.strike`, `body.support.small.strike`
 
 **Colors:** `text.primary`, `text.primary.brand`, `text.primary.inverse`, `text.secondary`, `text.secondary.brand`, `text.secondary.inverse`, `text.link`, `text.link.inverse`, `text.critical`, `text.info`, `text.success`, `text.warning` (plus static variants)
-
-### InputText -- Single-line text field
-
-```tsx
-import { InputText } from './design-system/components';
-
-<InputText label="Email" value={email} onChange={e => setEmail(e.target.value)} />
-<InputText label="Name" error errorMessage="Required field" />
-<InputText label="Search" startIcon={<Icon name="checkmark-small" />} />
-```
-
-**Props:** `label` (required), `value`, `defaultValue`, `error`, `errorMessage`, `message`, `disabled`, `startIcon`, `endIcon`, plus standard `<input>` attributes
-
-### InputTextArea -- Multi-line text field
-
-```tsx
-import { InputTextArea } from './design-system/components';
-
-<InputTextArea label="Description" value={desc} onChange={e => setDesc(e.target.value)} />
-```
-
-**Props:** Same as `InputText` but renders a `<textarea>`.
-
-### Checkbox
-
-```tsx
-import { Checkbox } from './design-system/components';
-
-<Checkbox label="I agree" checked={agreed} onChange={e => setAgreed(e.target.checked)} />
-```
-
-**Props:** `label` (required, accepts `ReactNode`), `checked`, `defaultChecked`, `disabled`, `error`, `name`, `onChange`
-
-### Switch -- Toggle switch
-
-```tsx
-import { Switch } from './design-system/components';
-
-<Switch label="Enable feature" checked={on} onChange={e => setOn(e.target.checked)} />
-<Switch label="Dark mode" labelPosition="start" checked={dark} onChange={e => setDark(e.target.checked)} />
-```
-
-**Props:** `label` (required, accepts `ReactNode`), `checked`, `defaultChecked`, `disabled`, `error`, `hideLabel`, `labelPosition` (`'end'` | `'start'`), `name`, `onChange`
-
-### Link
-
-```tsx
-import { Link } from './design-system/components';
-
-<Link href="https://example.com">Visit site</Link>
-<Link href="https://example.com" externalLink>External site</Link>
-<Link as="button" onClick={handleClick}>Action link</Link>
-```
-
-**Props:** `href`, `size` (`'large'` | `'medium'` | `'small'`), `externalLink`, `disabled`, `as` (`'a'` | `'button'` | `'span'`), plus standard HTML attributes
-
-### Icon
-
-```tsx
-import { Icon } from './design-system/components';
-
-<Icon name="checkmark-small" />
-<Icon name="close-small" color="icon.critical" />
-```
-
-**Props:** `name` (required: `'arrow-left'` | `'checkmark-small'` | `'close-small'`), `color` (default `'icon.primary'`), `className`
 
 ---
 
@@ -168,6 +107,7 @@ const { theme, mode, setTheme, setMode } = useTheme();
 
 When you must create custom UI (after confirming no DS component fits):
 
+- **Study a similar component first.** Find the most visually similar existing component in `src/design-system/components/` and read its `.scss` and `_tokens.scss` files. Mirror its token usage, spacing patterns, and BEM structure. For example: card-like containers reference `CardContainer/`, list layouts reference `Row/` and `ListOfRows/`, input-like controls reference `InputText/`.
 - **Never hardcode** hex colors, pixel sizes, or font values.
 - Use `var(--affirm-color-bg-*)` for backgrounds.
 - Use `var(--affirm-color-text-*)` for text colors.
@@ -226,13 +166,8 @@ React.useEffect(() => {
 | New main page | Copy `src/design-system/templates/MainTemplate.tsx` |
 | New settings page | Copy `src/design-system/templates/SettingsTemplate.tsx` |
 | Any text | `<Type variant="..." color="...">` |
-| Text input | `<InputText label="...">` |
-| Text area | `<InputTextArea label="...">` |
-| Checkbox | `<Checkbox label="...">` |
-| Toggle | `<Switch label="...">` |
-| Hyperlink | `<Link href="...">` |
-| Action link | `<Link as="button" onClick={...}>` |
-| Icon | `<Icon name="checkmark-small">` or `<Icon name="close-small">` |
+| Any DS component | Read `src/design-system/components/<Name>/README.md` |
+| Full component list | Read `src/design-system/components/index.ts` |
 | Spacing | `var(--affirm-spacing-*)` in SCSS |
 | Colors | `var(--affirm-color-bg-*)`, `var(--affirm-color-text-*)`, etc. |
 | Border radius | `var(--affirm-radius-*)` |
